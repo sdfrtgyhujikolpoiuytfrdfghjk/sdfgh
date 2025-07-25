@@ -1,0 +1,229 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(0, 0%, 100%);
+  --foreground: hsl(240, 10%, 3.9%);
+  --muted: hsl(240, 4.8%, 95.9%);
+  --muted-foreground: hsl(240, 3.7%, 15.9%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(240, 10%, 3.9%);
+  --card: hsl(240, 4.8%, 95.9%);
+  --card-foreground: hsl(240, 10%, 3.9%);
+  --border: hsl(240, 5.9%, 90%);
+  --input: hsl(240, 5.9%, 90%);
+  --primary: hsl(271, 81%, 56%);
+  --primary-foreground: hsl(0, 0%, 98%);
+  --secondary: hsl(240, 4.8%, 95.9%);
+  --secondary-foreground: hsl(240, 5.9%, 10%);
+  --accent: hsl(240, 4.8%, 95.9%);
+  --accent-foreground: hsl(240, 5.9%, 10%);
+  --destructive: hsl(0, 84.2%, 60.2%);
+  --destructive-foreground: hsl(60, 9.1%, 97.8%);
+  --ring: hsl(271, 81%, 56%);
+  --radius: 0.75rem;
+
+  /* AI Accounting Custom Colors */
+  --app-black: hsl(0, 0%, 3.9%);
+  --app-gray: hsl(0, 0%, 96.1%);
+  --app-purple: hsl(271, 100%, 25.5%);
+  --app-purple-light: hsl(271, 81%, 56%);
+  --app-text: hsl(0, 0%, 17.6%);
+  --app-text-secondary: hsl(220, 8.9%, 46.1%);
+}
+
+.dark {
+  --background: hsl(240, 10%, 3.9%);
+  --foreground: hsl(0, 0%, 98%);
+  --muted: hsl(240, 3.7%, 15.9%);
+  --muted-foreground: hsl(240, 5%, 64.9%);
+  --popover: hsl(240, 10%, 3.9%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --card: hsl(240, 10%, 3.9%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --border: hsl(240, 3.7%, 15.9%);
+  --input: hsl(240, 3.7%, 15.9%);
+  --primary: hsl(271, 81%, 56%);
+  --primary-foreground: hsl(0, 0%, 98%);
+  --secondary: hsl(240, 3.7%, 15.9%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --accent: hsl(240, 3.7%, 15.9%);
+  --accent-foreground: hsl(0, 0%, 98%);
+  --destructive: hsl(0, 62.8%, 30.6%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(240, 4.9%, 83.9%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Custom App Styles */
+  .app-black {
+    background-color: hsl(var(--app-black));
+  }
+
+  .app-gray {
+    background-color: hsl(var(--app-gray));
+  }
+
+  .app-purple {
+    background-color: hsl(var(--app-purple));
+  }
+
+  .app-purple-light {
+    background-color: hsl(var(--app-purple-light));
+  }
+
+  .text-app-text {
+    color: hsl(var(--app-text));
+  }
+
+  .text-app-text-secondary {
+    color: hsl(var(--app-text-secondary));
+  }
+
+  .border-app-purple {
+    border-color: hsl(var(--app-purple));
+  }
+
+  .hover\:bg-app-purple:hover {
+    background-color: hsl(var(--app-purple));
+  }
+
+  .hover\:bg-app-purple-light:hover {
+    background-color: hsl(var(--app-purple-light));
+  }
+
+  .focus\:ring-app-purple:focus {
+    --tw-ring-color: hsl(var(--app-purple));
+  }
+
+  /* Animation Classes */
+  .fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  .slide-up {
+    animation: slideUp 0.3s ease-out;
+  }
+
+  .bounce-gentle {
+    animation: bounceGentle 0.6s ease-in-out;
+  }
+
+  .card-hover {
+    transition: all 0.2s ease;
+  }
+
+  .card-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  }
+
+  .sidebar-hover {
+    transition: all 0.2s ease;
+  }
+
+  .sidebar-hover:hover {
+    background: linear-gradient(135deg, rgba(139, 69, 19, 0.1), rgba(139, 69, 19, 0.05));
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes bounceGentle {
+    0%, 20%, 53%, 80%, 100% {
+      transform: translate3d(0, 0, 0);
+    }
+    40%, 43% {
+      transform: translate3d(0, -8px, 0);
+    }
+    70% {
+      transform: translate3d(0, -4px, 0);
+    }
+    90% {
+      transform: translate3d(0, -2px, 0);
+    }
+  }
+
+  /* Widget Dragging */
+  .widget-draggable {
+    cursor: move;
+  }
+
+  .widget-dragging {
+    opacity: 0.5;
+    transform: rotate(5deg);
+  }
+
+  /* File Upload Zones */
+  .drag-zone {
+    transition: all 0.2s ease;
+  }
+
+  .drag-zone.drag-over {
+    border-color: hsl(var(--app-purple));
+    background-color: hsl(var(--app-purple) / 0.05);
+  }
+
+  /* Loading States */
+  .loading-spinner {
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* Glass Effect */
+  .glass-effect {
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.95);
+  }
+
+  /* Notification Pulse */
+  .notification-pulse {
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+}
