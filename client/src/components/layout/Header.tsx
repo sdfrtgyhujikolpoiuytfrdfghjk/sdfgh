@@ -106,13 +106,6 @@ export function Header() {
           </div>
 
           {/* User Menu */}
-          <Button variant="ghost" size="sm" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-[hsl(var(--app-purple))] rounded-full flex items-center justify-center">
-              <span className="text-white text-sm font-medium">JD</span>
-            </div>
-            <span className="text-sm font-medium hidden md:inline">John Doe</span>
-            <ChevronDown className="w-4 h-4" />
-          </Button>
         </div>
       </div>
     </header>

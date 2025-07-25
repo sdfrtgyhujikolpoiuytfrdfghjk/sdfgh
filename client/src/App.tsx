@@ -18,7 +18,7 @@ import NotFound from "@/pages/not-found";
 
 // Layout Components
 import Sidebar from "@/components/layout/Sidebar";
-import Header from "@/components/layout/Header";
+import { Header } from "@/components/layout/Header";
 import AIChatBubble from "@/components/layout/AIChatBubble";
 
 // Context for app state
