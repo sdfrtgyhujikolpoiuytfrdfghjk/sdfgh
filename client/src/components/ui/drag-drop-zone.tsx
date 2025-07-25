@@ -1,5 +1,4 @@
 import { useCallback, useState } from "react";
-import { useDropzone } from "react-dropzone";
 import { Upload, File, X, CheckCircle, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -30,6 +29,9 @@ export default function DragDropZone({
 }: DragDropZoneProps) {
   const [uploads, setUploads] = useState<FileUpload[]>([]);
   const { processFiles } = useDragDrop();
+
+  // Simple drag and drop implementation without react-dropzone
+  const [isDragActive, setIsDragActive] = useState(false);
 
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
     const newUploads = acceptedFiles.map(file => ({
@@ -69,15 +71,36 @@ export default function DragDropZone({
     }
   }, [processFiles, onFilesUploaded]);
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
-    accept: acceptedFileTypes.reduce((acc, type) => {
-      acc[type] = [];
-      return acc;
-    }, {} as Record<string, string[]>),
-    maxSize: maxFileSize,
-    multiple
-  });
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragActive(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragActive(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragActive(false);
+    
+    const files = Array.from(e.dataTransfer.files);
+    const validFiles = files.filter(file => {
+      const extension = '.' + file.name.split('.').pop()?.toLowerCase();
+      return acceptedFileTypes.includes(extension) && file.size <= maxFileSize;
+    });
+    
+    if (validFiles.length > 0) {
+      onDrop(multiple ? validFiles : [validFiles[0]]);
+    }
+  };
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    if (files.length > 0) {
+      onDrop(multiple ? files : [files[0]]);
+    }
+  };
 
   const removeUpload = (id: string) => {
     setUploads(prev => prev.filter(u => u.id !== id));
@@ -87,14 +110,23 @@ export default function DragDropZone({
     <div className="space-y-4">
       {/* Drop Zone */}
       <div
-        {...getRootProps()}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
         className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors ${
           isDragActive 
             ? "border-app-purple bg-purple-50" 
             : "border-gray-300 hover:border-app-purple hover:bg-gray-50"
         }`}
       >
-        <input {...getInputProps()} />
+        <input 
+          type="file"
+          multiple={multiple}
+          accept={acceptedFileTypes.join(',')}
+          onChange={handleFileSelect}
+          className="hidden"
+          id="file-upload"
+        />
         
         <div className="w-16 h-16 mx-auto mb-4 app-purple bg-opacity-10 rounded-lg flex items-center justify-center">
           <Upload className="w-8 h-8 text-app-purple" />
@@ -106,7 +138,10 @@ export default function DragDropZone({
         
         <p className="text-gray-600 mb-4">{description}</p>
         
-        <Button className="app-purple hover:app-purple-light">
+        <Button 
+          className="app-purple hover:app-purple-light"
+          onClick={() => document.getElementById('file-upload')?.click()}
+        >
           Choose Files
         </Button>
         

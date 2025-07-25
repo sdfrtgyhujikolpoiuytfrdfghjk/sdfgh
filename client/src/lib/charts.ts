@@ -1,17 +1,5 @@
-import { Chart, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, BarElement, ArcElement } from 'chart.js';
-
-// Register Chart.js components
-Chart.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  BarElement,
-  ArcElement,
-  Title,
-  Tooltip,
-  Legend
-);
+// Chart.js configuration and defaults
+// Components are registered dynamically in chart components to avoid import errors
 
 export const chartDefaults = {
   responsive: true,

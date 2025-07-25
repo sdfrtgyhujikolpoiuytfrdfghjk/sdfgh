@@ -1,14 +1,23 @@
 import { useEffect, useRef } from "react";
-import { Chart } from "chart.js";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { chartDefaults, purpleTheme } from "@/lib/charts";
 import { mockCashFlowData } from "@/lib/mock-data";
 
 export function CashFlowChart() {
   const chartRef = useRef<HTMLCanvasElement>(null);
-  const chartInstance = useRef<Chart | null>(null);
+  const chartInstance = useRef<any>(null);
 
   useEffect(() => {
+    let Chart: any;
+    
+    const loadChart = async () => {
+      try {
+        const chartModule = await import('chart.js');
+        Chart = chartModule.Chart;
+        
+        // Register required components
+        const { registerables } = chartModule;
+        Chart.register(...registerables);
+        
     if (!chartRef.current) return;
 
     const ctx = chartRef.current.getContext("2d");
@@ -23,13 +32,26 @@ export function CashFlowChart() {
       type: "line",
       data: mockCashFlowData,
       options: {
-        ...chartDefaults,
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: "bottom",
+          },
+        },
         scales: {
-          ...chartDefaults.scales,
+          x: {
+            grid: {
+              display: false,
+            },
+          },
           y: {
-            ...chartDefaults.scales?.y,
+            beginAtZero: true,
+            grid: {
+              color: 'hsl(214.3, 31.8%, 91.4%)',
+            },
             ticks: {
-              callback: function(value) {
+              callback: function(value: any) {
                 return '$' + (value as number).toLocaleString();
               }
             }
@@ -37,6 +59,12 @@ export function CashFlowChart() {
         }
       },
     });
+      } catch (error) {
+        console.error('Failed to load Chart.js:', error);
+      }
+    };
+
+    loadChart();
 
     return () => {
       if (chartInstance.current) {
